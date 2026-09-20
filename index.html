@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>미러핏 (MirrorFit) - AI 체형분석 & 스타일링</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- PC 환경용 뷰 토글 버튼 -->
+  <div class="view-mode-toggle" id="viewModeToggle" title="화면 모드 전환">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+      <line x1="8" y1="21" x2="16" y2="21"></line>
+      <line x1="12" y1="17" x2="12" y2="21"></line>
+    </svg>
+    <span id="viewModeText">전체 화면 뷰</span>
+  </div>
+
+  <!-- 메인 모바일 앱 컨테이너 프레임 -->
+  <div class="app-container" id="appContainer">
+    
+    <!-- 아이폰 스마트폰 상단 노치 / 카메라 -->
+    <div class="phone-notch">
+      <div class="phone-speaker"></div>
+      <div class="phone-camera-lens"></div>
+    </div>
+
+    <!-- 시스템 상단 상태바 -->
+    <div class="status-bar">
+      <span class="time" id="systemClock">09:41</span>
+      <div class="icons">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L12 22l7.03-4.39C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98C20.93 5.9 16.69 4 12 4z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="18" height="10" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><path d="M21 10v4" stroke="currentColor" stroke-width="2"/></svg>
+      </div>
+    </div>
+
+    <!-- 화면 라우팅 뷰포트 -->
+    <div class="screen-viewport">
+
+      <!-- ========================================================
+           [Step 1] 스플래시 / 온보딩 화면 (첨부 1 재현)
+           ======================================================== -->
+      <section class="screen active" id="screen-splash">
+        <div class="splash-brand">
+          <div class="brand-logo-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+            MirrorFit AI
+          </div>
+          <h1 class="splash-title">내 손안의 퍼스널<br>스타일리스트</h1>
+        </div>
+
+        <!-- 바디 와이어프레임 & 기하 그래픽 -->
+        <div class="splash-graphic-wrap">
+          <div class="graphic-deco-circle circle-mint-bg"></div>
+          <div class="graphic-deco-circle circle-coral-1"></div>
+          <div class="graphic-deco-circle circle-coral-2"></div>
+          <div class="graphic-scan-bracket bracket-tl"></div>
+
+          <!-- 첨부 1 정밀 재현 바디 SVG -->
+          <svg class="graphic-svg-body" viewBox="0 0 200 280" fill="none">
+            <!-- 그리드 사각형 -->
+            <rect x="35" y="45" width="130" height="170" stroke="#38c9b2" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" />
+            <!-- 신체 와이어프레임 폴리곤 -->
+            <!-- 머리 -->
+            <polygon points="100,20 112,32 108,52 92,52 88,32" fill="#58d8c2" opacity="0.8" />
+            <!-- 목 & 쇄골 -->
+            <polygon points="95,52 105,52 100,62" fill="#38c9b2" />
+            <polygon points="100,62 128,70 100,84" fill="#a4eedf" opacity="0.8" />
+            <polygon points="100,62 72,70 100,84" fill="#36caa9" opacity="0.9" />
+            <!-- 가슴 & 상체 -->
+            <polygon points="72,70 60,110 88,118 100,84" fill="#2ebfa4" opacity="0.85" />
+            <polygon points="128,70 140,110 112,118 100,84" fill="#c3f5ec" opacity="0.9" />
+            <!-- 팔 -->
+            <polygon points="72,70 60,110 52,145 60,145" fill="#25a890" opacity="0.7" />
+            <polygon points="128,70 140,110 148,145 140,145" fill="#a9ebe0" opacity="0.85" />
+            <!-- 손 -->
+            <circle cx="53" cy="155" r="4" fill="#30b89f" />
+            <circle cx="147" cy="155" r="4" fill="#30b89f" />
+            <!-- 허리 & 복부 -->
+            <polygon points="100,84 88,118 100,148" fill="#38c9b2" />
+            <polygon points="100,84 112,118 100,148" fill="#b9f3e9" opacity="0.95" />
+            <!-- 골반 & 힙 -->
+            <polygon points="88,118 78,160 100,172 100,148" fill="#29b399" opacity="0.9" />
+            <polygon points="112,118 122,160 100,172 100,148" fill="#c9f7ef" opacity="0.95" />
+            <!-- 허벅지 & 다리 좌 -->
+            <polygon points="78,160 84,215 98,215 100,172" fill="#23a48c" opacity="0.85" />
+            <polygon points="84,215 86,255 96,255 98,215" fill="#30b89f" opacity="0.9" />
+            <polygon points="86,255 78,265 96,265" fill="#249680" />
+            <!-- 허벅지 & 다리 우 -->
+            <polygon points="122,160 116,215 102,215 100,172" fill="#9deade" opacity="0.8" />
+            <polygon points="116,215 114,255 104,255 102,215" fill="#c2f5ed" opacity="0.9" />
+            <polygon points="114,255 122,265 104,265" fill="#75decc" />
+            <!-- 스캔 포인트 점들 -->
+            <circle cx="72" cy="70" r="3.5" fill="#ff7e67" />
+            <circle cx="128" cy="70" r="3.5" fill="#ff7e67" />
+            <circle cx="60" cy="110" r="3.5" fill="#ff7e67" />
+            <circle cx="140" cy="110" r="3.5" fill="#ff7e67" />
+            <circle cx="100" cy="172" r="3" fill="#ff7e67" />
+            <circle cx="91" cy="255" r="3" fill="#ff7e67" />
+            <circle cx="109" cy="255" r="3" fill="#ff7e67" />
+          </svg>
+        </div>
+
+        <p class="splash-desc">
+          <strong>AI 체형 분석</strong>으로 당신에게 꼭 맞는<br>
+          핏(Fit)과 스타일을 찾아드립니다.
+        </p>
+
+        <div>
+          <button class="btn-primary" id="btnStartOnboarding">시작하기</button>
+          <div class="splash-dots">
+            <span class="splash-dot"></span>
+            <span class="splash-dot active"></span>
+            <span class="splash-dot"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 2-1] 로그인 화면
+           ======================================================== -->
+      <section class="screen" id="screen-login">
+        <div class="login-header">
+          <div class="brand-logo-badge">MirrorFit</div>
+          <h2>간편하게 시작하세요</h2>
+          <p>나만의 퍼스널 체형 리포트를 보관하세요</p>
+        </div>
+
+        <div class="login-form">
+          <div class="input-group">
+            <label for="userNameInput">사용자 닉네임 / 이름</label>
+            <input type="text" id="userNameInput" value="산혜" placeholder="이름을 입력해주세요">
+          </div>
+          <div class="input-group">
+            <label for="userEmailInput">이메일 계정</label>
+            <input type="email" id="userEmailInput" value="sanhye@mirrorfit.io" placeholder="name@example.com">
+          </div>
+          <button class="btn-primary" id="btnLoginSubmit">미러핏으로 계속하기</button>
+        </div>
+
+        <div class="social-login-divider">
+          <span>또는 SNS 간편 로그인</span>
+        </div>
+
+        <div class="social-buttons">
+          <button class="btn-social btn-kakao" id="btnKakaoLogin">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.48 3 2 6.58 2 11c0 2.82 1.83 5.3 4.6 6.64l-1.18 4.34c-.1.37.28.69.61.51l5.22-3.46c.25.02.5.03.75.03 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg>
+            카카오 1초 로그인
+          </button>
+          <button class="btn-social btn-naver" id="btnNaverLogin">
+            <span style="font-weight:900; font-size:16px;">N</span>
+            네이버 아이디로 로그인
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 2-2] 3대 골격 체형 전문 지식 화면
+           ======================================================== -->
+      <section class="screen" id="screen-guide">
+        <header class="nav-header">
+          <button class="btn-back" id="btnBackToLogin">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="header-title">골격 체형 가이드</span>
+          <div class="header-action"></div>
+        </header>
+
+        <div class="guide-content">
+          <div class="guide-title-box">
+            <h3>나의 타고난 골격 타입은?</h3>
+            <p>신체 질감과 뼈대 구조에 따라 3대 체형으로 나뉩니다.<br>각 체형의 고유한 아름다움을 알아보세요.</p>
+          </div>
+
+          <!-- 3대 체형 탭 -->
+          <div class="body-type-tabs">
+            <button class="body-tab-btn active" data-tab="straight">스트레이트</button>
+            <button class="body-tab-btn" data-tab="wave">웨이브</button>
+            <button class="body-tab-btn" data-tab="natural">내추럴</button>
+          </div>
+
+          <!-- 1. 스트레이트 체형 카드 -->
+          <div class="body-type-card active" id="tab-straight">
+            <div class="card-header-type">
+              <span class="type-name">스트레이트 체형</span>
+              <span class="type-badge">입체감 &amp; 탄력</span>
+            </div>
+            <div class="type-visual-box">
+              <svg width="100" height="130" viewBox="0 0 100 130" fill="none">
+                <!-- 스트레이트 실루엣 (상체 볼륨, 높은 힙, 매끄러운 다리 라인) -->
+                <path d="M50 15 C45 15 42 22 42 30 C42 38 46 42 50 42 C54 42 58 38 58 30 C58 22 55 15 50 15 Z" fill="#38c9b2"/>
+                <path d="M35 48 C35 45 42 43 50 43 C58 43 65 45 65 48 L68 70 C66 74 62 76 50 76 C38 76 34 74 32 70 Z" fill="#4fe0c8" opacity="0.85"/>
+                <path d="M36 76 C34 85 36 100 38 120 L46 120 C46 102 46 88 47 77 Z" fill="#2ca894"/>
+                <path d="M64 76 C66 85 64 100 62 120 L54 120 C54 102 54 88 53 77 Z" fill="#38c9b2"/>
+              </svg>
+            </div>
+            <div class="type-desc-list">
+              <div class="desc-item">
+                <span class="tag">신체 특징</span>
+                <span>상체 중심의 입체적인 볼륨감, 탄력 있는 피부결, 쇄골이 도드라지지 않고 목이 비교적 짧은 편입니다.</span>
+              </div>
+              <div class="desc-item">
+                <span class="tag">추천 스타일</span>
+                <span>클래식하고 심플한 정핏(Standard Fit), V넥 셔츠, 슬랙스, 각 잡힌 고급스러운 코튼/울 소재</span>
+              </div>
+              <div class="desc-item">
+                <span class="tag">피할 스타일</span>
+                <span>과도한 프릴, 드롭숄더 오버핏, 얇고 흐물거리는 소재는 부해 보일 수 있습니다.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 웨이브 체형 카드 -->
+          <div class="body-type-card" id="tab-wave">
+            <div class="card-header-type">
+              <span class="type-name">웨이브 체형</span>
+              <span class="type-badge">우아한 곡선미</span>
+            </div>
+            <div class="type-visual-box">
+              <svg width="100" height="130" viewBox="0 0 100 130" fill="none">
+                <!-- 웨이브 실루엣 (가녀린 상체, 완만한 허리, 하체 중심 곡선) -->
+                <path d="M50 14 C46 14 43 20 43 28 C43 36 46 40 50 40 C54 40 57 36 57 28 C57 20 54 14 50 14 Z" fill="#38c9b2"/>
+                <path d="M38 46 C38 44 43 42 50 42 C57 42 62 44 62 46 L60 68 C58 72 55 74 50 74 C45 74 42 72 40 68 Z" fill="#4fe0c8" opacity="0.85"/>
+                <path d="M37 74 C31 84 32 102 36 120 L44 120 C42 102 44 88 47 75 Z" fill="#2ca894"/>
+                <path d="M63 74 C69 84 68 102 64 120 L56 120 C58 102 56 88 53 75 Z" fill="#38c9b2"/>
+              </svg>
+            </div>
+            <div class="type-desc-list">
+              <div class="desc-item">
+                <span class="tag">신체 특징</span>
+                <span>상체가 가녀리고 목이 길며 쇄골이 돋보입니다. 허리선이 길고 힙 볼륨이 아래쪽에 위치하는 하체 중심형입니다.</span>
+              </div>
+              <div class="desc-item">
+                <span class="tag">추천 스타일</span>
+                <span>허리선을 끌어올리는 하이웨이스트, 크롭 상의, 부드러운 시폰/트위드 소재, A라인 스커트</span>
+              </div>
+              <div class="desc-item">
+                <span class="tag">피할 스타일</span>
+                <span>깊게 파인 U/V넥, 긴 로우웨이스트 팬츠는 무게중심을 낮아 보이게 할 수 있습니다.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. 내추럴 체형 카드 -->
+          <div class="body-type-card" id="tab-natural">
+            <div class="card-header-type">
+              <span class="type-name">내추럴 체형</span>
+              <span class="type-badge">스타일리시한 골격</span>
+            </div>
+            <div class="type-visual-box">
+              <svg width="100" height="130" viewBox="0 0 100 130" fill="none">
+                <!-- 내추럴 실루엣 (직사각형 프레임, 어깨 관절 발달, 긴 기장감) -->
+                <path d="M50 16 C46 16 43 22 43 30 C43 38 46 41 50 41 C54 41 57 38 57 30 C57 22 54 16 50 16 Z" fill="#38c9b2"/>
+                <path d="M33 46 C33 43 41 42 50 42 C59 42 67 43 67 46 L64 72 C62 75 58 76 50 76 C42 76 38 75 36 72 Z" fill="#4fe0c8" opacity="0.85"/>
+                <path d="M36 76 C35 88 35 102 36 120 L45 120 C45 102 46 88 48 77 Z" fill="#2ca894"/>
+                <path d="M64 76 C65 88 65 102 64 120 L55 120 C55 102 54 88 52 77 Z" fill="#38c9b2"/>
+              </svg>
+            </div>
+            <div class="type-desc-list">
+              <div class="desc-item">
+                <span class="tag">신체 특징</span>
+                <span>골격과 관절(어깨, 무릎, 쇄골)이 또렷하게 드러나는 프레임 중심형입니다. 무심한 듯 자연스러운 핏이 가장 잘 어울립니다.</span>
+              </div>
+              <div class="desc-item">
+                <span class="tag">추천 스타일</span>
+                <span>오버사이즈 자켓, 롱 와이드 팬츠, 린넨/데님/코듀로이 등 내추럴한 질감의 캐주얼 룩</span>
+              </div>
+              <div class="desc-item">
+                <span class="tag">피할 스타일</span>
+                <span>너무 타이트하게 붙는 스키니핏이나 작은 악세사리는 골격을 부각시킬 수 있습니다.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="guide-action-bar">
+          <button class="btn-primary" id="btnStartCapture">다음 (내 체형 분석하기)</button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 3] AI 사진 촬영 / 첨부 화면 (첨부 3 좌측 재현)
+           ======================================================== -->
+      <section class="screen" id="screen-capture">
+        <header class="capture-header">
+          <button class="btn-back" id="btnBackToGuide">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="header-title">체형 분석 사진 촬영</span>
+          <div style="width:38px;"></div>
+        </header>
+
+        <!-- 카메라 뷰 및 오버레이 -->
+        <div class="camera-view-container">
+          <img class="camera-preview-img" id="cameraPreviewImg" src="" alt="촬영 미리보기" style="display:none;">
+
+          <!-- 동심원 및 십자선 가이드 -->
+          <div class="camera-overlay-grid">
+            <div class="overlay-crosshair"></div>
+          </div>
+
+          <!-- 신체 와이어프레임 가이드 -->
+          <svg class="body-silhouette-guide" viewBox="0 0 100 220" fill="none">
+            <path d="M50 10 C46 10 43 14 43 20 C43 26 46 30 50 30 C54 30 57 26 57 20 C57 14 54 10 50 10 Z" stroke="#38c9b2" stroke-width="1.8" fill="rgba(56, 201, 178, 0.15)"/>
+            <path d="M30 40 L50 34 L70 40 L76 75 L66 110 L50 120 L34 110 L24 75 Z" stroke="#38c9b2" stroke-width="1.8" stroke-dasharray="2 2" fill="rgba(56, 201, 178, 0.1)"/>
+            <path d="M34 110 L28 175 L38 210 L48 210 L48 120" stroke="#38c9b2" stroke-width="1.8"/>
+            <path d="M66 110 L72 175 L62 210 L52 210 L52 120" stroke="#38c9b2" stroke-width="1.8"/>
+            <!-- 수평 가이드선 -->
+            <line x1="20" y1="40" x2="80" y2="40" stroke="#58ecd6" stroke-width="1"/>
+            <line x1="26" y1="85" x2="74" y2="85" stroke="#58ecd6" stroke-width="1"/>
+          </svg>
+
+          <!-- 첨부 3 좌측 4대 핵심 말풍선 핀 -->
+          <div class="guide-bubble bubble-neck">목 둘레, 목 길이</div>
+          <div class="guide-bubble bubble-shoulder">어깨 너비</div>
+          <div class="guide-bubble bubble-waist">허리 길이</div>
+          <div class="guide-bubble bubble-arm">팔 길이</div>
+        </div>
+
+        <!-- 하단 컨트롤 영역 -->
+        <div class="capture-footer">
+          <p class="capture-tip">정확한 분석을 위해 전신이 나오도록 촬영해 주세요.</p>
+          
+          <div class="capture-controls">
+            <!-- 갤러리 업로드 버튼 -->
+            <label class="btn-icon-square" title="갤러리에서 선택" style="cursor:pointer;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <polyline points="21 15 16 10 5 21"/>
+              </svg>
+              <input type="file" id="filePhotoInput" accept="image/*" style="display:none;">
+            </label>
+
+            <!-- 메인 촬영 버튼 -->
+            <button class="btn-primary" id="btnTriggerCapture">촬영하기</button>
+
+            <!-- 카메라 전환 / 예시 사진 토글 버튼 -->
+            <button class="btn-icon-square" id="btnToggleSamplePhoto" title="예시 모델 사진 적용">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                <circle cx="12" cy="13" r="4"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 4] 사전 설문조사 화면 (첨부 3 우측 재현)
+           ======================================================== -->
+      <section class="screen" id="screen-survey">
+        <header class="nav-header">
+          <button class="btn-back" id="btnBackToCapture">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="header-title">사전 설문조사</span>
+          <div class="header-action"></div>
+        </header>
+
+        <div class="survey-header-bar">
+          <div class="progress-meta">
+            <span class="progress-step-text" id="surveyStepText">설문조사 1 / 3</span>
+            <span class="progress-step-text">33%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="surveyProgressBar"></div>
+          </div>
+        </div>
+
+        <div class="survey-title-area">
+          <h2>신체 정보를 알려주세요</h2>
+          <p>AI가 사진과 데이터를 결합하여 정밀 분석합니다.</p>
+        </div>
+
+        <div class="survey-content">
+          <!-- 1. 기본 정보 입력 (키, 몸무게) -->
+          <div class="survey-section">
+            <div class="section-label">1. 기본 신체 스펙</div>
+            <div class="form-row-2">
+              <div class="select-input-pill">
+                <select id="surveyHeight">
+                  <option value="155">155 cm</option>
+                  <option value="160">160 cm</option>
+                  <option value="165" selected>165 cm</option>
+                  <option value="170">170 cm</option>
+                  <option value="175">175 cm</option>
+                  <option value="180">180 cm</option>
+                </select>
+                <span class="select-arrow">▼</span>
+              </div>
+              <div class="select-input-pill">
+                <select id="surveyWeight">
+                  <option value="48">48 kg</option>
+                  <option value="52">52 kg</option>
+                  <option value="55" selected>55 kg</option>
+                  <option value="60">60 kg</option>
+                  <option value="65">65 kg</option>
+                  <option value="70">70 kg</option>
+                </select>
+                <span class="select-arrow">▼</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 성별 선택 -->
+          <div class="survey-section">
+            <div class="section-label">2. 성별</div>
+            <div class="chip-grid-2">
+              <button class="chip-btn active" data-gender="female">여성</button>
+              <button class="chip-btn" data-gender="male">남성</button>
+            </div>
+          </div>
+
+          <!-- 3. 어깨 & 상체 골격 체감 -->
+          <div class="survey-section">
+            <div class="section-label">3. 어깨 및 쇄골 골격</div>
+            <div class="chip-grid-3">
+              <button class="chip-btn active" data-shoulder="straight">도톰 &amp; 탄력</button>
+              <button class="chip-btn" data-shoulder="wave">가녀림 &amp; 쇄골</button>
+              <button class="chip-btn" data-shoulder="natural">넓고 각진 뼈대</button>
+            </div>
+          </div>
+
+          <!-- 4. 허리 및 골반 밸런스 -->
+          <div class="survey-section">
+            <div class="section-label">4. 허리 둘레 및 골반 위치</div>
+            <div class="chip-grid-2">
+              <button class="chip-btn active" data-waist="high">골반 높고 허리선 뚜렷</button>
+              <button class="chip-btn" data-waist="long">허리선 길고 완만함</button>
+            </div>
+          </div>
+
+          <!-- 5. 평소 고민 부위 (복수 선택 가능 - 첨부 3 우측 재현) -->
+          <div class="survey-section">
+            <div class="section-label">5. 평소 고민 부위 <small>(복수 선택 가능)</small></div>
+            <div class="chip-grid-2">
+              <button class="chip-btn chip-multi" data-worry="shoulder">어깨</button>
+              <button class="chip-btn chip-multi active" data-worry="waist">허리</button>
+              <button class="chip-btn chip-multi" data-worry="hip">엉덩이</button>
+              <button class="chip-btn chip-multi active" data-worry="thigh">허벅지</button>
+            </div>
+          </div>
+
+          <!-- 6. 살이 찔 때 가장 먼저 변화하는 곳 -->
+          <div class="survey-section">
+            <div class="section-label">6. 체중 증가 시 살이 붙는 패턴</div>
+            <div class="chip-grid-3">
+              <button class="chip-btn active" data-fat="upper">상체/팔뚝</button>
+              <button class="chip-btn" data-fat="lower">하체/엉덩이</button>
+              <button class="chip-btn" data-fat="all">전신 골고루</button>
+            </div>
+          </div>
+
+          <!-- 7. 선호하는 스타일 무드 -->
+          <div class="survey-section">
+            <div class="section-label">7. 내가 즐겨 입는 스타일</div>
+            <div class="chip-grid-3">
+              <button class="chip-btn active" data-style="minimal">미니멀</button>
+              <button class="chip-btn" data-style="casual">캐주얼</button>
+              <button class="chip-btn" data-style="feminine">페미닌/댄디</button>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="btnSubmitSurvey" style="margin-top:10px;">
+            AI 체형 분석 시작하기
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 5-1] AI 분석 중 로딩 화면
+           ======================================================== -->
+      <section class="screen" id="screen-loading">
+        <div class="loading-radar-box">
+          <div class="radar-ring radar-ring-1"></div>
+          <div class="radar-ring radar-ring-2"></div>
+          <div class="radar-ring radar-ring-3"></div>
+          <div class="radar-scan-line"></div>
+          <!-- 중앙 실루엣 아이콘 -->
+          <svg width="60" height="90" viewBox="0 0 60 90" fill="none">
+            <path d="M30 10 C27 10 25 13 25 18 C25 23 27 26 30 26 C33 26 35 23 35 18 C35 13 33 10 30 10 Z" fill="#38c9b2"/>
+            <path d="M18 34 L30 30 L42 34 L45 60 L38 85 L32 85 L32 55 L28 55 L28 85 L22 85 L15 60 Z" fill="#38c9b2" opacity="0.6"/>
+          </svg>
+        </div>
+
+        <h3 class="loading-title">AI가 체형을 분석하고 있습니다</h3>
+        <p class="loading-status-text" id="loadingStatus">신체 랜드마크 33개 포인트 측정 중...</p>
+      </section>
+
+      <!-- ========================================================
+           [Step 5-2] AI 체형 분석 결과 화면
+           ======================================================== -->
+      <section class="screen" id="screen-result">
+        <div class="result-banner">
+          <span class="result-badge">AI 분석 완료</span>
+          <h2 class="result-main-title" id="resultTypeTitle">당신의 체형은 '스트레이트'</h2>
+          <p class="result-sub-title">입체적인 볼륨감과 탄력 있는 균형 잡힌 실루엣</p>
+        </div>
+
+        <div class="result-content">
+          <!-- 비주얼 다이어그램 카드 -->
+          <div class="result-visual-card">
+            <div class="brand-logo-badge" id="resultSubBadge">상체 중심 입체형</div>
+            <div class="result-body-diagram" id="resultSvgContainer">
+              <!-- SVG 동적 주입 -->
+            </div>
+            <div class="result-scores-grid">
+              <div class="score-box">
+                <div class="score-val">94점</div>
+                <div class="score-lbl">신체 밸런스</div>
+              </div>
+              <div class="score-box">
+                <div class="score-val">1:1.6</div>
+                <div class="score-lbl">황금 비율 지수</div>
+              </div>
+              <div class="score-box">
+                <div class="score-val">상체 우세</div>
+                <div class="score-lbl">볼륨 중심축</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 베스트 & 워스트 핏 가이드 -->
+          <div class="fit-guide-box">
+            <div class="fit-card fit-best">
+              <div class="fit-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Best Fit 추천
+              </div>
+              <ul id="resultBestList">
+                <li>클래식 스탠다드 셔츠</li>
+                <li>일자 슬림 스트레이트 슬랙스</li>
+                <li>적당한 V넥 &amp; 스퀘어넥</li>
+              </ul>
+            </div>
+            <div class="fit-card fit-worst">
+              <div class="fit-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                Worst Fit 주의
+              </div>
+              <ul id="resultWorstList">
+                <li>과도한 프릴 &amp; 퍼프소매</li>
+                <li>루즈핏 오버사이즈 롱니트</li>
+                <li>얇고 주름지는 쉬폰 소재</li>
+              </ul>
+            </div>
+          </div>
+
+          <button class="btn-primary" id="btnGoToHome">미러핏 홈으로 이동하기</button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 6] 본격 메인 홈 화면 (첨부 2 완벽 재현)
+           ======================================================== -->
+      <section class="screen" id="screen-home">
+        <!-- 상단 환영 헤더 -->
+        <div class="home-top-header">
+          <h2 class="home-greeting">안녕하세요, <span id="homeUserName">산혜</span>님!</h2>
+          <div class="profile-avatar-btn" id="btnHeaderProfile" title="프로필">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- 체형 분석 결과 요약 민트 배너 (첨부 2) -->
+        <div class="home-result-banner">
+          <p class="banner-text">당신의 체형 분석 결과: '<strong id="homeBannerType">스트레이트형</strong>'</p>
+          <button class="banner-btn-pill" id="btnOpenDetailedReport">상세 리포트 보기</button>
+        </div>
+
+        <!-- 4대 주요 서비스 버튼 그리드 (첨부 2 완벽 재현) -->
+        <h3 class="section-title">주요 서비스</h3>
+        <div class="services-grid">
+          <!-- 1. AI 체형 진단 -->
+          <div class="service-card" id="btnServiceAnalysis">
+            <div class="service-icon-box">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <!-- 스캔 브라켓 -->
+                <path d="M8 15V8H15" stroke="#38c9b2" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M36 15V8H29" stroke="#38c9b2" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M8 29V36H15" stroke="#38c9b2" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M36 29V36H29" stroke="#38c9b2" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- 체형 토르소 -->
+                <path d="M16 16 C16 16 19 22 22 22 C25 22 28 16 28 16 L30 25 C30 28 26 31 26 34 L18 34 C18 31 14 28 14 25 Z" fill="#ffe0da" stroke="#ff7c65" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <span class="service-card-title">AI 체형 진단</span>
+          </div>
+
+          <!-- 2. 맞춤 스타일링 -->
+          <div class="service-card" id="btnServiceStyling">
+            <div class="service-icon-box">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <!-- 옷걸이 -->
+                <path d="M22 10 C20 10 19 12 19 13 C19 15 22 16 22 17" stroke="#38c9b2" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 21 L22 17 L32 21" stroke="#38c9b2" stroke-width="2" stroke-linecap="round"/>
+                <!-- 가운/자켓 민트색 -->
+                <path d="M13 21 L10 27 L15 28 L17 38 L27 38 L29 28 L34 27 L31 21 Z" fill="#bcf5eb" stroke="#25b39c" stroke-width="1.8"/>
+                <line x1="22" y1="23" x2="22" y2="38" stroke="#25b39c" stroke-width="1.5"/>
+                <!-- 리본 벨트 -->
+                <path d="M16 30 L28 30" stroke="#25b39c" stroke-width="2.5"/>
+              </svg>
+            </div>
+            <span class="service-card-title">맞춤 스타일링</span>
+          </div>
+
+          <!-- 3. 자세/체형 교정 -->
+          <div class="service-card" id="btnServicePosture">
+            <div class="service-icon-box">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <!-- 의자에 바르게 앉은 사람 -->
+                <circle cx="28" cy="12" r="3.5" fill="#38c9b2"/>
+                <!-- 등받이와 좌판 -->
+                <path d="M31 16 L31 32 L31 38" stroke="#68807b" stroke-width="2" stroke-linecap="round"/>
+                <path d="M22 32 L34 32" stroke="#68807b" stroke-width="2" stroke-linecap="round"/>
+                <!-- 바른 척추 및 신체 -->
+                <path d="M28 17 L28 27 L20 27 L20 38" stroke="#25b39c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M28 22 L20 22" stroke="#25b39c" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="service-card-title">자세 교정</span>
+          </div>
+
+          <!-- 4. 연계 중고거래 -->
+          <div class="service-card" id="btnServiceMarket">
+            <div class="service-icon-box">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <!-- 옷걸이와 가격표 태그 -->
+                <path d="M22 12 C20 12 19 14 19 15 C19 17 22 17 22 18" stroke="#38c9b2" stroke-width="2" stroke-linecap="round"/>
+                <path d="M12 23 L22 18 L32 23" stroke="#38c9b2" stroke-width="2" stroke-linecap="round"/>
+                <!-- 코랄 태그 -->
+                <rect x="22" y="22" width="14" height="12" rx="2" transform="rotate(30 22 22)" fill="#ffb4a6" stroke="#ff6a52" stroke-width="1.5"/>
+                <circle cx="23" cy="27" r="1.5" fill="#ffffff"/>
+                <line x1="27" y1="28" x2="31" y2="30" stroke="#ff6a52" stroke-width="1.2"/>
+              </svg>
+            </div>
+            <span class="service-card-title">연계 중고거래</span>
+          </div>
+        </div>
+
+        <!-- 오늘의 추천 아이템 가로 스크롤 (첨부 2) -->
+        <h3 class="section-title">오늘의 추천 아이템</h3>
+        <div class="recommend-scroll-wrap" id="homeRecommendList">
+          <!-- 추천 아이템 1 -->
+          <div class="product-item-card" data-product="1">
+            <div class="product-img-box">
+              <!-- 블라우스 & 플리츠 스커트 세련된 그래픽 -->
+              <svg width="100%" height="100%" viewBox="0 0 130 140" fill="#f8faf9">
+                <rect width="130" height="140" fill="#edf4f2"/>
+                <path d="M45 25 L65 32 L85 25 L92 58 L75 58 L75 125 L55 125 L55 58 L38 58 Z" fill="#ffe5dc" stroke="#e0bcb0" stroke-width="1.5"/>
+                <path d="M42 60 L88 60 L98 125 L32 125 Z" fill="#303b39"/>
+              </svg>
+            </div>
+            <div class="product-info-box">
+              <span class="product-tag">내 체형 맞춤</span>
+              <div class="product-price">₩32,000</div>
+            </div>
+          </div>
+
+          <!-- 추천 아이템 2 -->
+          <div class="product-item-card" data-product="2">
+            <div class="product-img-box">
+              <svg width="100%" height="100%" viewBox="0 0 130 140" fill="#f8faf9">
+                <rect width="130" height="140" fill="#f0f3f2"/>
+                <path d="M40 30 L65 35 L90 30 L95 75 L35 75 Z" fill="#202725"/>
+                <line x1="65" y1="35" x2="65" y2="75" stroke="#ffffff" stroke-width="1.5"/>
+                <rect x="52" y="80" width="26" height="40" rx="3" fill="#ffffff" stroke="#c0d0cc" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="product-info-box">
+              <span class="product-tag">스트레이트 핏</span>
+              <div class="product-price">₩58,000</div>
+            </div>
+          </div>
+
+          <!-- 추천 아이템 3 -->
+          <div class="product-item-card" data-product="3">
+            <div class="product-img-box">
+              <svg width="100%" height="100%" viewBox="0 0 130 140" fill="#f8faf9">
+                <rect width="130" height="140" fill="#f7f5ef"/>
+                <circle cx="65" cy="55" r="28" fill="#e8dfd8"/>
+                <path d="M50 85 C50 78 80 78 80 85 L85 120 L45 120 Z" fill="#d0c4ba"/>
+              </svg>
+            </div>
+            <div class="product-info-box">
+              <span class="product-tag">실루엣 보완</span>
+              <div class="product-price">₩29,000</div>
+            </div>
+          </div>
+
+          <!-- 추천 아이템 4 -->
+          <div class="product-item-card" data-product="4">
+            <div class="product-img-box">
+              <svg width="100%" height="100%" viewBox="0 0 130 140" fill="#f8faf9">
+                <rect width="130" height="140" fill="#eff3f5"/>
+                <path d="M40 35 L65 38 L90 35 L92 90 L38 90 Z" fill="#9db1a8"/>
+                <line x1="50" y1="90" x2="48" y2="130" stroke="#758880" stroke-width="3"/>
+                <line x1="80" y1="90" x2="82" y2="130" stroke="#758880" stroke-width="3"/>
+              </svg>
+            </div>
+            <div class="product-info-box">
+              <span class="product-tag">클래식 슬랙스</span>
+              <div class="product-price">₩82,000</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 7-1] 부가서비스: 내 체형 상세 분석 리포트 화면
+           ======================================================== -->
+      <section class="screen" id="screen-report-detail">
+        <header class="nav-header">
+          <button class="btn-back" id="btnBackFromReport">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="header-title">상세 체형 분석 리포트</span>
+          <div class="header-action"></div>
+        </header>
+
+        <div class="detail-report-wrap">
+          <div class="dimension-card">
+            <h4 style="font-size:16px; margin-bottom:14px; font-weight:800;">신체 부위별 황금 밸런스</h4>
+            
+            <div class="dimension-item">
+              <div class="dimension-meta">
+                <span>어깨 너비 vs 골반 비율</span>
+                <span style="color:var(--primary-mint-dark);">1 : 0.98 (완벽 밸런스)</span>
+              </div>
+              <div class="dim-bar-track">
+                <div class="dim-bar-fill" style="width: 88%;"></div>
+              </div>
+            </div>
+
+            <div class="dimension-item">
+              <div class="dimension-meta">
+                <span>목 길이 &amp; 쇄골 각도</span>
+                <span style="color:var(--primary-mint-dark);">표준 입체형</span>
+              </div>
+              <div class="dim-bar-track">
+                <div class="dim-bar-fill" style="width: 75%;"></div>
+              </div>
+            </div>
+
+            <div class="dimension-item">
+              <div class="dimension-meta">
+                <span>상체 길이 vs 하체 비율</span>
+                <span style="color:var(--primary-mint-dark);">48% : 52% (롱레그)</span>
+              </div>
+              <div class="dim-bar-track">
+                <div class="dim-bar-fill" style="width: 82%;"></div>
+              </div>
+            </div>
+
+            <div class="dimension-item">
+              <div class="dimension-meta">
+                <span>허리-힙 곡선 굴곡도</span>
+                <span style="color:var(--primary-mint-dark);">0.72 (탄력 S라인)</span>
+              </div>
+              <div class="dim-bar-track">
+                <div class="dim-bar-fill" style="width: 92%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dimension-card">
+            <h4 style="font-size:16px; margin-bottom:12px; font-weight:800;">추천 원단 및 네크라인 매칭</h4>
+            <div style="display:flex; flex-direction:column; gap:10px; font-size:13px; color:var(--text-sub);">
+              <p>✔ <strong>추천 소재:</strong> 고밀도 코튼, 울 100%, 실크 새틴, 각이 무너지지 않는 탄탄한 가죽</p>
+              <p>✔ <strong>추천 넥라인:</strong> 깊은 V넥, 오픈 카라 셔츠, 세련된 스퀘어넥</p>
+              <p>✔ <strong>기장감:</strong> 골반에 딱 떨어지는 스탠다드 기장 상의와 발목을 살짝 덮는 스트레이트 팬츠</p>
+            </div>
+          </div>
+
+          <button class="btn-secondary" id="btnRetakePhoto">체형 재측정 및 사진 재촬영</button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 7-2] 부가서비스: 체형/자세 교정 서비스 화면
+           ======================================================== -->
+      <section class="screen" id="screen-posture">
+        <header class="nav-header">
+          <button class="btn-back" id="btnBackFromPosture">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="header-title">맞춤 자세 &amp; 체형 교정</span>
+          <div class="header-action"></div>
+        </header>
+
+        <div class="posture-header-card">
+          <h3>매일 5분, 옷태를 살리는 바른 정렬</h3>
+          <p>AI가 감지한 굽은 어깨와 골반 밸런스를 개선하여 슬림하고 곧은 실루엣을 만듭니다.</p>
+        </div>
+
+        <div class="routine-list">
+          <!-- 루틴 1 -->
+          <div class="routine-item">
+            <div class="routine-thumb">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="7" r="4"/>
+                <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+              </svg>
+            </div>
+            <div class="routine-info">
+              <div class="routine-title">라운드숄더 펴기 &amp; 쇄골 열기</div>
+              <div class="routine-desc">벽에 등 대고 W자 팔 벌리기 (30초 x 3세트)</div>
+            </div>
+            <button class="btn-start-timer" data-time="30">시작</button>
+          </div>
+
+          <!-- 루틴 2 -->
+          <div class="routine-item">
+            <div class="routine-thumb">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <div class="routine-info">
+              <div class="routine-title">골반 전방경사 교정 브릿지</div>
+              <div class="routine-desc">골반 수평 정렬 및 둔근 활성화 (45초 x 2세트)</div>
+            </div>
+            <button class="btn-start-timer" data-time="45">시작</button>
+          </div>
+
+          <!-- 루틴 3 -->
+          <div class="routine-item">
+            <div class="routine-thumb">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+            </div>
+            <div class="routine-info">
+              <div class="routine-title">긴 목선을 위한 승모근 릴리즈</div>
+              <div class="routine-desc">목 측면 부드럽게 지그시 당기기 (30초)</div>
+            </div>
+            <button class="btn-start-timer" data-time="30">시작</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 7-3] 부가서비스: 맞춤 스타일링 추천 화면
+           ======================================================== -->
+      <section class="screen" id="screen-styling">
+        <header class="nav-header">
+          <button class="btn-back" id="btnBackFromStyling">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="header-title">맞춤 스타일링 룩북</span>
+          <div class="header-action"></div>
+        </header>
+
+        <!-- 카테고리 칩 -->
+        <div class="style-category-chips">
+          <button class="style-chip active" data-category="all">전체 룩</button>
+          <button class="style-chip" data-category="work">오피스 출근룩</button>
+          <button class="style-chip" data-category="date">데이트 &amp; 외출</button>
+          <button class="style-chip" data-category="casual">위켄드 캐주얼</button>
+        </div>
+
+        <!-- 룩북 그리드 -->
+        <div class="lookbook-grid" id="stylingGrid">
+          <!-- 룩 1 -->
+          <div class="lookbook-card" data-style-id="1">
+            <div class="lookbook-img">
+              <svg width="100%" height="100%" viewBox="0 0 160 180" fill="#f2f5f4">
+                <rect width="160" height="180" fill="#edf3f1"/>
+                <path d="M50 30 L80 36 L110 30 L115 80 L45 80 Z" fill="#2d3748"/>
+                <path d="M55 82 L105 82 L112 160 L48 160 Z" fill="#ffffff" stroke="#cbd5e0" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div class="lookbook-info">
+              <div class="lookbook-title">클래식 모던 수트 셋업</div>
+              <div class="lookbook-tags">#스트레이트최적 #슬림핏</div>
+            </div>
+          </div>
+
+          <!-- 룩 2 -->
+          <div class="lookbook-card" data-style-id="2">
+            <div class="lookbook-img">
+              <svg width="100%" height="100%" viewBox="0 0 160 180" fill="#f2f5f4">
+                <rect width="160" height="180" fill="#f9f4f1"/>
+                <path d="M55 35 L80 40 L105 35 L110 75 L50 75 Z" fill="#e2c8be"/>
+                <path d="M52 75 L108 75 L125 160 L35 160 Z" fill="#4a5568"/>
+              </svg>
+            </div>
+            <div class="lookbook-info">
+              <div class="lookbook-title">V넥 니트 &amp; A라인 롱스커트</div>
+              <div class="lookbook-tags">#쇄골강조 #페미닌무드</div>
+            </div>
+          </div>
+
+          <!-- 룩 3 -->
+          <div class="lookbook-card" data-style-id="3">
+            <div class="lookbook-img">
+              <svg width="100%" height="100%" viewBox="0 0 160 180" fill="#f2f5f4">
+                <rect width="160" height="180" fill="#f3f7f6"/>
+                <path d="M50 30 L80 34 L110 30 L120 70 L40 70 Z" fill="#38c9b2" opacity="0.85"/>
+                <path d="M50 70 L110 70 L115 160 L45 160 Z" fill="#2b4c7e"/>
+              </svg>
+            </div>
+            <div class="lookbook-info">
+              <div class="lookbook-title">스퀘어넥 블라우스 &amp; 데님</div>
+              <div class="lookbook-tags">#단정캐주얼 #체형보완</div>
+            </div>
+          </div>
+
+          <!-- 룩 4 -->
+          <div class="lookbook-card" data-style-id="4">
+            <div class="lookbook-img">
+              <svg width="100%" height="100%" viewBox="0 0 160 180" fill="#f2f5f4">
+                <rect width="160" height="180" fill="#f4f4f4"/>
+                <path d="M45 25 L80 30 L115 25 L120 90 L40 90 Z" fill="#bfa084"/>
+                <path d="M58 92 L102 92 L108 160 L52 160 Z" fill="#1a202c"/>
+              </svg>
+            </div>
+            <div class="lookbook-info">
+              <div class="lookbook-title">싱글 트렌치 &amp; 스트레이트 슬랙스</div>
+              <div class="lookbook-tags">#시크무드 #포멀오피스</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           [Step 7-4] 부가서비스: 체형 연계 중고거래 마켓 화면
+           ======================================================== -->
+      <section class="screen" id="screen-market">
+        <header class="nav-header">
+          <button class="btn-back" id="btnBackFromMarket">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <span class="header-title">체형 연계 중고거래</span>
+          <div class="header-action">
+            <button id="btnOpenSellModal" style="background:none; border:none; color:var(--primary-mint-dark); font-weight:700; cursor:pointer;">판매등록</button>
+          </div>
+        </header>
+
+        <!-- 내 체형 맞춤 필터 토글 바 -->
+        <div class="market-filter-bar">
+          <div class="market-filter-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            내 체형(165cm / 스트레이트) 맞춤만 보기
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="marketFitFilterToggle" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- 피드 리스트 -->
+        <div class="market-feed" id="marketFeedList">
+          <!-- 피드 1 -->
+          <div class="market-item-card" data-market-id="1">
+            <div class="market-item-img">
+              <svg width="100%" height="100%" viewBox="0 0 90 90" fill="#eef3f2">
+                <rect width="90" height="90" fill="#edf4f2"/>
+                <path d="M28 20 L45 24 L62 20 L68 55 L22 55 Z" fill="#2d3748"/>
+                <path d="M28 56 L62 56 L68 85 L22 85 Z" fill="#38c9b2" opacity="0.8"/>
+              </svg>
+            </div>
+            <div class="market-item-info">
+              <div>
+                <span class="fit-match-badge">🎯 체형 99% 일치</span>
+                <div class="market-title">자라 클래식 싱글 테일러드 자켓 (M)</div>
+                <div class="market-seller-spec">판매자: 165cm / 54kg (스트레이트형)</div>
+              </div>
+              <div class="market-price">₩42,000</div>
+            </div>
+          </div>
+
+          <!-- 피드 2 -->
+          <div class="market-item-card" data-market-id="2">
+            <div class="market-item-img">
+              <svg width="100%" height="100%" viewBox="0 0 90 90" fill="#f8f4f0">
+                <rect width="90" height="90" fill="#f8f4f0"/>
+                <path d="M30 18 L45 22 L60 18 L64 45 L26 45 Z" fill="#ffe2d8"/>
+                <path d="M28 46 L62 46 L70 85 L20 85 Z" fill="#1a202c"/>
+              </svg>
+            </div>
+            <div class="market-item-info">
+              <div>
+                <span class="fit-match-badge">🎯 체형 98% 일치</span>
+                <div class="market-title">슬로우앤드 실루엣 핀턱 슬랙스 차콜 (S)</div>
+                <div class="market-seller-spec">판매자: 164cm / 53kg (스트레이트형)</div>
+              </div>
+              <div class="market-price">₩26,000</div>
+            </div>
+          </div>
+
+          <!-- 피드 3 -->
+          <div class="market-item-card" data-market-id="3">
+            <div class="market-item-img">
+              <svg width="100%" height="100%" viewBox="0 0 90 90" fill="#f1f7f5">
+                <rect width="90" height="90" fill="#f1f7f5"/>
+                <path d="M25 18 L45 23 L65 18 L70 52 L20 52 Z" fill="#9ec9bf"/>
+                <circle cx="45" cy="68" r="14" fill="#d97768"/>
+              </svg>
+            </div>
+            <div class="market-item-info">
+              <div>
+                <span class="fit-match-badge">🎯 체형 96% 일치</span>
+                <div class="market-title">코스(COS) 스퀘어넥 텐셀 블라우스 화이트</div>
+                <div class="market-seller-spec">판매자: 166cm / 56kg (스트레이트형)</div>
+              </div>
+              <div class="market-price">₩38,000</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /screen-viewport -->
+
+    <!-- ========================================================
+         하단 고정 네비게이션 탭바 (홈 및 부가화면 활성화 시 노출)
+         ======================================================== -->
+    <nav class="bottom-nav-bar" id="bottomNavBar" style="display:none;">
+      <!-- 1. Home -->
+      <button class="nav-tab-item active" data-target="screen-home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>Home</span>
+      </button>
+
+      <!-- 2. Apply (분석) -->
+      <button class="nav-tab-item" data-target="screen-report-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span>Apply</span>
+      </button>
+
+      <!-- 3. Shop (스타일링/추천) -->
+      <button class="nav-tab-item" data-target="screen-styling">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span>Shop</span>
+      </button>
+
+      <!-- 4. Community (연계 중고거래) -->
+      <button class="nav-tab-item" data-target="screen-market">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Community</span>
+      </button>
+
+      <!-- 5. Profile (자세/체형 교정 및 내 정보) -->
+      <button class="nav-tab-item" data-target="screen-posture">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span>Posture</span>
+      </button>
+    </nav>
+
+    <!-- 하단 스마트폰 홈 인디케이터 바 -->
+    <div class="phone-chin"></div>
+
+  </div><!-- /app-container -->
+
+  <!-- ========================================================
+       공통 모달: 중고거래 상품 상세 & 채팅 시뮬레이션
+       ======================================================== -->
+  <div class="modal-backdrop" id="marketDetailModal">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+        <span class="fit-match-badge">🎯 내 체형과 100% 매칭</span>
+        <button id="btnCloseModal" style="background:none; border:none; font-size:18px; cursor:pointer; color:var(--text-muted);">&times;</button>
+      </div>
+      <h3 id="modalMarketTitle" style="font-size:18px; font-weight:800; margin-bottom:6px;">자라 클래식 싱글 테일러드 자켓 (M)</h3>
+      <p id="modalMarketPrice" style="font-size:20px; font-weight:800; color:var(--primary-mint-dark); margin-bottom:14px;">₩42,000</p>
+      
+      <div style="background:var(--primary-mint-soft); padding:12px; border-radius:12px; margin-bottom:16px; font-size:13px; color:var(--text-sub);">
+        <strong>💡 AI 체형 보증 코멘트:</strong><br>
+        "판매자님은 스트레이트 체형으로, 어깨 라인이 직각으로 잡히는 본 자켓의 실루엣이 고객님의 상체 볼륨을 가장 슬림하고 우아하게 표현해 줍니다."
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button class="btn-secondary" id="btnModalChat">1:1 체형 피팅 문의 채팅</button>
+        <button class="btn-primary" id="btnModalBuy">안전 결제하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스트레칭 타이머 모달 -->
+  <div class="modal-backdrop" id="timerModal">
+    <div class="modal-sheet" style="text-align:center;">
+      <div class="sheet-handle"></div>
+      <h3 style="font-size:19px; font-weight:800; margin-bottom:6px;">스트레칭 진행 중</h3>
+      <p style="font-size:13px; color:var(--text-sub); margin-bottom:20px;">어깨를 바르게 펴고 호흡을 유지하세요</p>
+      
+      <div style="font-size:54px; font-weight:900; color:var(--primary-mint-dark); margin-bottom:20px;" id="timerCountDisplay">30s</div>
+      
+      <button class="btn-primary" id="btnStopTimer">스트레칭 완료</button>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
